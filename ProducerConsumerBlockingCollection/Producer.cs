@@ -12,9 +12,11 @@ namespace ProducerConsumerBlockingCollection
         BlockingCollection<int> _buffer = new BlockingCollection<int>();
         private int _howmany;
 
-        public Producer(BlockingCollection<int> blockingCollection, int howmany )
+        public Producer(BlockingCollection<int> buffer, int howmany )
         {
-            _buffer = blockingCollection;
+            if (buffer == null) {throw new ArgumentException("buffer");}
+            if (howmany <= 0) { throw new ArgumentException("howMany"); }
+            _buffer = buffer;
             _howmany = howmany;
         }
 

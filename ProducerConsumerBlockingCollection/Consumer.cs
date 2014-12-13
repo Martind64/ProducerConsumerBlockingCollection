@@ -24,10 +24,9 @@ namespace ProducerConsumerBlockingCollection
             {
                 while (!_buffer.IsCompleted)
                 {
-                    _buffer.Take();
-                    Console.WriteLine("Consumer took element");
-                }
-            
+                    int element = _buffer.Take();
+                    Console.WriteLine("Consumer took element: {0}", element);
+                }            
             }
             catch (Exception)
             {

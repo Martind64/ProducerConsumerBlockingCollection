@@ -12,7 +12,9 @@ namespace ProducerConsumerBlockingCollection
     {
         static void Main(string[] args)
         {
-            OneProducerOneConsumer();
+            //OneProducerOneConsumer();
+            //OneProducerTwoConsumers();
+            MiddleMan();
 
         }
 
@@ -39,11 +41,15 @@ namespace ProducerConsumerBlockingCollection
             Parallel.Invoke(producer.Run, consumer1.Run, consumer2.Run);
         }
 
-        public static void ConcurrentBag()
+        public static void MiddleMan()
         {
-            ConcurrentBag<int> _buffer = new ConcurrentBag<int>();
 
-            Producer producer = new Producer(_buffer, 10);
+            BlockingCollection<int> _ingoingbuffer = new BlockingCollection<int>(4);
+            BlockingCollection<int> _outgoingbuffer = new BlockingCollection<int>(3);
+            Producer producer = new Producer(_ingoingbuffer, 10);
+            MiddleMan middleman = new MiddleMan(_ingoingbuffer, _outgoingbuffer);
+            Consumer consumer = new Consumer(_outgoingbuffer);
+            Parallel.Invoke(producer.Run, middleman.Run, consumer.Run);
 
         }
 

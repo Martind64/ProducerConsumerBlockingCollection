@@ -9,10 +9,30 @@ namespace ProducerConsumerBlockingCollection
 {
     public class MiddleMan
     {
-        BlockingCollection<int> _ingoingBuffer = new BlockingCollection<int>();
-        BlockingCollection<int> _outGoingBuffer = new BlockingCollection<int>(); 
+        private readonly BlockingCollection<int> _ingoingBuffer;
+        private readonly BlockingCollection<int> _outgoingBuffer;
 
+        public MiddleMan(BlockingCollection<int> ingoingBuffer, BlockingCollection<int> outgoingBuffer)
+        {
+            _ingoingBuffer = ingoingBuffer;
+            _outgoingBuffer = outgoingBuffer;
+        }
 
+           public void Run()
+        {
+            while (!_ingoingBuffer.IsCompleted)
+            {
+                try
+                {
+                    int element = _ingoingBuffer.Take();
+                    _outgoingBuffer.Add(element);
+                    Console.WriteLine("MiddleMan handled: {0}", element);
+                }
+                catch (InvalidOperationException) { /* ignored */ }
+            }
+            _outgoingBuffer.CompleteAdding();
+        }
+        
 
 
 
