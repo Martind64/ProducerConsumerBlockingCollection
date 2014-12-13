@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,8 @@ namespace ProducerConsumerBlockingCollection
             for (int i = 0; i < _howmany; i++)
             {
                 _buffer.Add(i);
+                //EventLog eventlog = new EventLog();
+                //eventlog.WriteEntry("Producer added {0}", EventLogEntryType.Information, i);
                 Console.WriteLine("Producer added {0}", i);
             }
             _buffer.CompleteAdding();
